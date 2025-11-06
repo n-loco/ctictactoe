@@ -58,12 +58,14 @@
  * `1b` em hexadecimal, representa
  * a tecla ESC (Escape) do teclado.
  * 
- * Várias sequências que começam com
- * ESC servem para fazer coisas como
+ * Ase squências usadas nesse programa
+ * que começam com ESC, são um padrão ANSI,
+ * e servem para fazer coisas como
  * mudar cores, formatação, mover o cursor,
  * limpar a tela, etc.
- * Então sempre que ver esse cara e uns
- * caracteres confusos, é uma sequência do tipo.
+ * Então sempre que ver esse `ESC` no começo
+ * seguido por uma sequência de caracteres,
+ * saiba que é uma sequência ANSI.
  * 
  * Para mais informações, você pode visitar:
  *  - https://xumaquer.github.io/mdbook-linguagem-c/x-03-terminal.html
@@ -125,11 +127,6 @@ struct Color
 
 /**
  * Macro ajudante para cores inline.
- *
- * NOTA: No Visual Studio Code, ele cria
- * um quadradinho mostrando a cor, porém
- * NÃO é recomendável mudar a cor pelo
- * menu que esse quadradinho abre.
  */
 #define rgb(r, g, b) ((struct Color){r, g, b})
 
