@@ -1634,7 +1634,7 @@ struct UStrLenRes ustrlen(const char *str)
  * a partir do cursor, usa o
  * cursor como o centro do texto.
  */
-void writes_center(const char *str)
+void write_center(const char *str)
 {
     struct UStrLenRes len = ustrlen(str);
     size_t visual_half = len.ulen - (len.ulen / 2);
@@ -1705,7 +1705,7 @@ void write_text_node(struct TextNode node)
     if (node.style.fmt_flags & BACKGROUND_COLOR_FLAG)
         set_background_color(node.style.foreground_color);
 
-    writes_center(node.str);
+    write_center(node.str);
 
     if (node.style.fmt_flags != 0)
         reset_formatting();
