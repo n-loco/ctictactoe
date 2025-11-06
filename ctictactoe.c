@@ -76,11 +76,6 @@
 #define ESC "\x1b"
 
 /**
- * Macro ajudante para escrita simples e rápida.
- */
-#define writes(s) fwrite(s, 1, sizeof(s) - 1, stdout)
-
-/**
  * Interrompe a execução do
  * programa por `ms` milissegundos.
  */
@@ -154,7 +149,7 @@ struct Vec2 display_size()
  */
 void reset_formatting()
 {
-    writes(ESC"[0m");
+    printf(ESC"[0m");
 }
 
 /**
@@ -162,7 +157,7 @@ void reset_formatting()
  */
 void set_bold()
 {
-    writes(ESC"[1m");
+    printf(ESC"[1m");
 }
 
 /**
@@ -170,7 +165,7 @@ void set_bold()
  */
 void set_dim()
 {
-    writes(ESC"[2m");
+    printf(ESC"[2m");
 }
 
 /**
@@ -178,7 +173,7 @@ void set_dim()
  */
 void set_italic()
 {
-    writes(ESC"[3m");
+    printf(ESC"[3m");
 }
 
 /**
@@ -258,7 +253,7 @@ void new_screen_frame(bool force_clean)
     bool size_changed = (prev_size.x != size.x) || (prev_size.y != size.y);
     
     if (force_clean || size_changed)
-        writes(ESC"[J");
+        printf(ESC"[J");
 
     if (size_changed)
         prev_size = size;
@@ -291,9 +286,9 @@ struct TerminalConfig original_terminal_cfg = {0};
 void restore_terminal(void)
 {
     // Volta a mostrar o cursor.
-    writes(ESC"[?25h");
+    printf(ESC"[?25h");
     // Volta para o buffer principal.
-    writes(ESC"[?1049l");
+    printf(ESC"[?1049l");
 
     // Aplicando as configurações originais do terminal.
 #if defined (_WIN32)
@@ -372,9 +367,9 @@ void setup_terminal()
     setvbuf(stdout, NULL, _IONBF, 0);
 
     // Muda para o buffer alternativo.
-    writes(ESC"[?1049h");
+    printf(ESC"[?1049h");
     // Esconde o cursor.
-    writes(ESC"[?25l");
+    printf(ESC"[?25l");
 
     rewind_cursor();
 
@@ -785,18 +780,18 @@ void render_game_frame(enum EndGame endgame)
     else if (endgame == O_VICTORY)
         set_foreground_color(actor_color(O_ACTOR));
 
-    writes("╭─ C Tic Tac Toe ─╮");
+    printf("╭─ C Tic Tac Toe ─╮");
     move_cursor(vec2(-19, 1));
 
     for (int i = 0 ; i < 9; i++)
     {
-        writes("│");
+        printf("│");
         move_cursor(vec2(17, 0));
-        writes("│");
+        printf("│");
         move_cursor(vec2(-19, 1));
     }
 
-    writes("╰─────────────────╯");
+    printf("╰─────────────────╯");
     reset_formatting();
 }
 
@@ -809,18 +804,18 @@ void render_endgame(enum EndGame endgame, enum Actor turn, int moves)
     {
     case GAME_DRAW:
         set_background_color(game_draw_color());
-        writes("    Deu velha!     ");
+        printf("    Deu velha!     ");
         break;
     case O_VICTORY:
         set_background_color(actor_color(O_ACTOR));
-        writes("  O é o vencedor!  ");
+        printf("  O é o vencedor!  ");
         break;
     case X_VICTORY:
         set_background_color(actor_color(X_ACTOR));
-        writes("  X é o vencedor!  ");
+        printf("  X é o vencedor!  ");
         break;
     case RUNNING:
-        writes("     Turno: ");
+        printf("     Turno: ");
         draw_game_actor(turn);
         move_cursor(vec2(-13, 1));
         reset_formatting();
@@ -862,15 +857,15 @@ void draw_game_cell_frame(enum Actor actor, bool highlighted)
     else
         set_dim();
 
-    writes("╭───╮");
+    printf("╭───╮");
     move_cursor(vec2(-5, 1));
 
-    writes("│");
+    printf("│");
     move_cursor(vec2(3, 0));
-    writes("│");
+    printf("│");
     move_cursor(vec2(-5, 1));
 
-    writes("╰───╯");
+    printf("╰───╯");
     move_cursor(vec2(-5, -2));
 
     reset_formatting();
