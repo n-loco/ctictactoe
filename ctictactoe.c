@@ -32,8 +32,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <locale.h>
-#include <string.h>
+//#include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <time.h>
@@ -355,10 +354,7 @@ void setup_terminal()
     stdin_trms.c_lflag &= ~(ECHO | ICANON | ISIG);
 
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &stdin_trms);
-#endif
-    // Só por garantia...
-    setlocale(LC_ALL, "pt_BR.UTF-8");
-    
+#endif    
     // Tiramos a bufferização da saída
     // para não precisarmos ter que usar `\n`
     // e nem usar `fflush`.
