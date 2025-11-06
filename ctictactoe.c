@@ -24,8 +24,9 @@
  * e qualquer outra coisa.
  */
 
-// Necessário para acessar algumas coisas POSIX (Unix).
-#if defined (__unix__)
+// Necessário para usar alguns recursos definidos pelo padrão POSIX,
+// seguido por sistemas Unix-like como Linux, macOS, etc.
+#if defined (__unix__) || defined (__APPLE__)
 # define _POSIX_C_SOURCE 199309L
 #endif
 
@@ -47,7 +48,7 @@
  */
 #if defined (_WIN32)
 # include <windows.h>
-#elif defined (__unix__)
+#elif defined (__unix__) || defined (__APPLE__)
 # include <unistd.h>
 # include <termios.h>
 # include <sys/ioctl.h>
@@ -85,7 +86,7 @@ void block_delay(uint32_t ms)
 {
 #if defined (_WIN32)
     Sleep(ms);
-#elif defined (__unix__)
+#elif defined (__unix__) || defined (__APPLE__)
     struct timespec t = {0};
     if (ms >= 1000)
     {
@@ -144,7 +145,7 @@ struct Vec2 display_size()
         (ws.srWindow.Right - ws.srWindow.Left) + 1,
         (ws.srWindow.Bottom - ws.srWindow.Top) + 1
     );
-#elif defined (__unix__)
+#elif defined (__unix__) || defined (__APPLE__)
     struct winsize ws = {0};
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
     return vec2(ws.ws_col, ws.ws_row);
@@ -277,7 +278,7 @@ struct TerminalConfig
     UINT __codepage;
     DWORD __output_cfg;
     DWORD __input_cfg;
-#elif defined (__unix__)
+#elif defined (__unix__) || defined (__APPLE__)
     struct termios __input_cfg;
 #endif
 };
@@ -303,7 +304,7 @@ void restore_terminal(void)
     SetConsoleOutputCP(original_terminal_cfg.__output_codepage);
     SetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), original_terminal_cfg.__input_cfg);
     SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE), original_terminal_cfg.__output_cfg);
-#elif defined (__unix__)
+#elif defined (__unix__) || defined (__APPLE__)
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &original_terminal_cfg.__input_cfg);
 #endif
 }
@@ -354,7 +355,7 @@ void setup_terminal()
 
     SetConsoleMode(stdout_h, stdout_mode);
     SetConsoleMode(stdin_h, stdin_mode);
-#elif defined (__unix__)
+#elif defined (__unix__) || defined (__APPLE__)
     tcgetattr(STDIN_FILENO, &original_terminal_cfg.__input_cfg);
 
     struct termios stdin_trms = original_terminal_cfg.__input_cfg;
@@ -401,7 +402,7 @@ size_t raw_input(uint8_t *seq, size_t n)
     DWORD rd;
     ReadFile(GetStdHandle(STD_INPUT_HANDLE), seq, n, &rd, NULL);
     return rd;
-#elif defined (__unix__)
+#elif defined (__unix__) || defined (__APPLE__)
     return read(STDIN_FILENO, seq, n);
 #endif
 }
