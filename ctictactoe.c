@@ -56,7 +56,7 @@
  * `1b` em hexadecimal, representa
  * a tecla ESC (Escape) do teclado.
  * 
- * Ase squências usadas nesse programa
+ * As squências usadas nesse programa
  * que começam com ESC, são um padrão ANSI,
  * e servem para fazer coisas como
  * mudar cores, formatação, mover o cursor,
